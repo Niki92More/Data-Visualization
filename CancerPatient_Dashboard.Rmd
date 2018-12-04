@@ -1,0 +1,233 @@
+---
+title: "Cancer Distribution in India"
+output: 
+  flexdashboard::flex_dashboard:
+    theme : cerulean
+    orientation: columns
+    vertical_layout: fill
+    social : ["facebook", "twitter", "menu"]
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(knitr)
+library(DT)
+library(rpivotTable)
+library(ggplot2)
+library(plotly)
+library(dplyr)
+library(openintro)
+library(highcharter)
+library(ggvis)
+library(pivottabler)
+```
+
+```{r}
+
+data<-read.csv("D:/All Tutorials Studies/R_TUT/Projects/Data Visualization/CP1.csv")
+```
+
+
+```{r}
+mycolors<- c("blue", "#FFC125", "darkgreen", "darkorange")
+
+```
+
+
+Cancer Patient
+================================
+
+Row 
+-----------------------------------------------------------------------
+### Total Unique States
+
+```{r}
+valueBox(length(unique(data$States)),
+         icon = "fa-building")
+
+```
+
+
+
+### Total Patients in Year 2011 
+
+```{r}
+
+valueBox(sum(data$Y11),
+     icon = "fa-user")
+```
+
+
+
+### Total Patients in Year 2012
+
+```{r}
+
+valueBox(sum(data$Y12),
+     icon = "fa-user")
+```
+
+
+
+### Total Patients in Year 2013
+
+```{r}
+
+valueBox(sum(data$Y13),
+     icon = "fa-user")
+```
+
+
+
+### Total Patients in Year 2014
+
+```{r}
+
+valueBox(sum(data$Y14),
+     icon = "fa-user")
+```
+
+Row
+-----------------------------------------------------------------------
+
+
+### Patient versus  Indivisual state and Year
+
+
+
+```{r}
+p1 <- data %>%
+         group_by(States) %>%
+        summarise(count = n()) %>%
+         plot_ly(x = ~States,
+                 y = ~count,
+                 color = "blue",
+                 type = 'bar') %>%
+layout(xaxis = list(title = "Patient By State"),
+yaxis = list(title = 'Count'))
+p1
+
+```
+
+
+
+
+
+### Year 2011 COUNT Vs State
+
+
+
+
+
+```{r}
+P2011 <- data %>%
+        group_by(States) %>%
+        summarise(YS11 = sum(Y11)) %>%
+         plot_ly(x = ~States,
+                 y = ~YS11,
+                 color = "blue",
+                 type = 'bar') %>%
+layout(xaxis = list(title = "Patient By State"),
+yaxis = list(title = 'Count'))
+
+P2011 
+
+```
+
+
+
+
+### Year 2012 COUNT Vs State
+
+```{r}
+P2012 <- data %>%
+        group_by(States) %>%
+        summarise(YS12 = sum(Y12)) %>%
+         plot_ly(x = ~States,
+                 y = ~YS12,
+                 color = "blue",
+                 type = 'bar') %>%
+layout(xaxis = list(title = "Patient By State"),
+yaxis = list(title = 'Count'))
+
+P2012 
+
+```
+
+
+
+### Year 2013 COUNT Vs State
+
+```{r}
+P2013 <- data %>%
+        group_by(States) %>%
+        summarise(YS13 = sum(Y13)) %>%
+         plot_ly(x = ~States,
+                 y = ~YS13,
+                 color = "blue",
+                 type = 'bar') %>%
+layout(xaxis = list(title = "Patient By State"),
+yaxis = list(title = 'Count'))
+
+P2013 
+
+```
+
+
+### Year 2014 COUNT Vs State
+
+```{r}
+P2014 <- data %>%
+        group_by(States) %>%
+        summarise(YS14 = sum(Y14)) %>%
+         plot_ly(x = ~States,
+                 y = ~YS14,
+                 color = "blue",
+                 type = 'bar') %>%
+layout(xaxis = list(title = "Patient By State"),
+yaxis = list(title = 'Count'))
+
+P2014 
+
+```
+
+
+
+Data Table
+==============================================
+
+### Data Table
+
+```{r}
+datatable(data,
+          caption = "Patient's Data",
+          rownames = T,
+          filter = "top",
+          options = list(pageLength = 25))
+```
+
+
+
+
+Pivot Table
+======================================
+
+### Pivot Table
+
+
+```{r}
+rpivotTable(data,rows="States", cols=c("Y11"),width="100%", height="400px")
+
+```
+
+
+About Report {data-orientation=columns} 
+===========================================
+
+### About Report 
+* This is about Number cancer patient in India.
+
+*The dataset Contains `r length(unique(data$States))` Unique State.
+
+*Total Number of Cancer patient  `r sum(data$Total)` .
+
